@@ -1,7 +1,7 @@
 const { Category } = require("../models/category");
 
 
-exports.signup = async (req, res, next) => {
+exports.addCategory  = async (req, res, next) => {
 
 
     try {

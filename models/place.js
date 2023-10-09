@@ -1,4 +1,5 @@
 const { mongoose } = require("mongoose");
+const { categorySchema } = require('../models/category');//relationam place cu category
 
 const placeSchema = mongoose.Schema({//obj relational mapping
     name: {
@@ -36,9 +37,15 @@ const placeSchema = mongoose.Schema({//obj relational mapping
     status: {
         type: String,
         required: true
+    },
+
+    
+    category: {
+        type: categorySchema
     }
-  
+
 });
 
 const Place=mongoose.model("Place", placeSchema);
 exports.Place=Place;//daca nu fac export nu pot sa fac import in alt loc
+

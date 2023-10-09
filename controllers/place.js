@@ -1,7 +1,7 @@
 const { Place } = require("../models/place");
 
 
-exports.signup = async (req, res, next) => {
+exports.addPlace = async (req, res, next) => {
     try {
 
         let place = await Place.findOne({ name: req.body.name });

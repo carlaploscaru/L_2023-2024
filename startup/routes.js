@@ -5,6 +5,6 @@ const placeRoutes = require("../routes/places");// adauga places ro
 
 module.exports = (app) => {
   app.use(express.json());
-  app.use("/auth", authRoutes);
+  app.use(authRoutes);//app.use("/auth", authRoutes);
   app.use("/places", placeRoutes);// app.use('/place' );
 };
