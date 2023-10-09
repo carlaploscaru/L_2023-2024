@@ -39,11 +39,13 @@ const placeSchema = mongoose.Schema({//obj relational mapping
         required: true
     },
 
-    
-    category: {
-        type: categorySchema
-    }
 
+    category: {
+        type: categorySchema,
+        /*type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'*/
+    }
+    
 });
 
 const Place=mongoose.model("Place", placeSchema);

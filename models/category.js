@@ -10,3 +10,4 @@ const categorySchema=mongoose.Schema({//obj relational mapping
 
 const Category=mongoose.model("Category",categorySchema);
 exports.Category=Category;
+exports.categorySchema = categorySchema;//fara da eroare deoarece trebuie exportat pentru relationarea cu models/place.js
