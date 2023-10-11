@@ -1,7 +1,7 @@
 const { Place } = require("../models/place");
+const { Category } = require("../models/category");
 
-
-exports.addPlace = async (req, res, next) => {
+/*exports.addPlace = async (req, res, next) => {
     try {
 
         let place = await Place.findOne({ name: req.body.name });
@@ -60,7 +60,35 @@ exports.addPlace = async (req, res, next) => {
         next(error);
     }
 
-};
+};*/
+
+
+exports.addPlace = async (req, res, next) => {
+    try {
+      const category = await Category.findById(req.body.categoryId);
+  
+      if (!category) {
+        const error = new Error("Category does not exist!");
+        error.statusCode = 401;
+        throw error;
+      }
+  
+      let place = new Place({
+        title: req.body.title,
+        suprafata: req.body.suprafata,
+        tara: req.body.tara,
+        oras: req.body.oras,
+        strada: req.body.strada,
+        category: { _id: category._id, title: category.title },
+        owner: req.userId
+      });
+      await place.save();
+  
+      res.status(200).send(place);
+    } catch (error) {
+      next(error);
+    }
+  };
 
 
 exports.getPlaces = async (req, res, next) => {
@@ -75,3 +103,42 @@ exports.getPlaces = async (req, res, next) => {
     }
 };
 
+exports.editPlace = async (req, res, next) => {
+    const placeId = req.params.placeId;
+
+    try {
+        const place = await Place.findById(placeId);
+        const oldPlace = place;
+
+        if(req.body.categoryId) {
+            const category = await Category.findById(req.body.categoryId);
+            place.category =  { _id: category._id, title: category.title }
+        }
+
+        if(!place) {
+            const error = new Error("Place does not exist!");
+            error.statusCode = 403;
+            throw error;
+        }
+
+     
+
+        if(place.owner._id.valueOf()!== req.userId) {
+            const error = new Error("Not authorized for this asset!");
+            error.statusCode = 422;
+            throw error;
+        }
+
+        place.title = req.body.title || oldPlace.title;
+        place.suprafata = req.body.suprafata || oldPlace.suprafata;
+        place.tara = req.body.tara || oldPlace.tara;
+        place.judet = req.body.judet || oldPlace.judet;
+  
+        await place.save();
+
+        res.status(200).send(place);
+
+    } catch (error) {
+        next(error);
+    } 
+}

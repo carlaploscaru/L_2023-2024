@@ -26,4 +26,15 @@ exports.addCategory  = async (req, res, next) => {
 
 };
 
+exports.getCategories = async (req, res, next) => {
+    let categories = [];
 
+
+    try {
+        categories = await Category.find();
+
+        res.status(200).send(categories);
+    } catch (error) {
+        next(error)
+    }
+}
